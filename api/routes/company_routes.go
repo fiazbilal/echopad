@@ -2,8 +2,8 @@ package routes
 
 import (
 	"company-api/api/controllers"
-	"company-api/pkg/repository"
-	"company-api/pkg/service"
+	"company-api/api/repository"
+	"company-api/api/service"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"

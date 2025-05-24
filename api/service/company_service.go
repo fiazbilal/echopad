@@ -2,7 +2,7 @@ package service
 
 import (
 	"company-api/api/models"
-	"company-api/pkg/repository"
+	"company-api/api/repository"
 	"errors"
 	"fmt"
 	"strconv"

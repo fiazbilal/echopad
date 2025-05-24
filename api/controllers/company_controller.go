@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"company-api/api/models"
-	"company-api/pkg/service"
+	"company-api/api/service"
 	"fmt"
 	"net/http"
 
@@ -37,7 +37,7 @@ func (c *CompanyController) GetCompanies(ctx echo.Context) error {
 // GetCompany returns a specific company by ID
 func (c *CompanyController) GetCompany(ctx echo.Context) error {
 	id := ctx.Param("id")
-	
+
 	company, err := c.service.GetByID(id)
 	if err != nil {
 		return ctx.JSON(http.StatusNotFound, map[string]string{
@@ -45,28 +45,28 @@ func (c *CompanyController) GetCompany(ctx echo.Context) error {
 			"error":   err.Error(),
 		})
 	}
-	
+
 	return ctx.JSON(http.StatusOK, company)
 }
 
 // CreateCompany creates a new company
 func (c *CompanyController) CreateCompany(ctx echo.Context) error {
 	company := new(models.Company)
-	
+
 	if err := ctx.Bind(company); err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"message": "Invalid request payload",
 			"error":   err.Error(),
 		})
 	}
-	
+
 	// Validate required fields
 	if company.Name == "" || company.Email == "" {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"message": "Name and Email are required fields",
 		})
 	}
-	
+
 	// Create the company
 	err := c.service.Create(company)
 	if err != nil {
@@ -75,7 +75,7 @@ func (c *CompanyController) CreateCompany(ctx echo.Context) error {
 			"error":   err.Error(),
 		})
 	}
-	
+
 	return ctx.JSON(http.StatusCreated, company)
 }
 
@@ -83,21 +83,21 @@ func (c *CompanyController) CreateCompany(ctx echo.Context) error {
 func (c *CompanyController) UpdateCompany(ctx echo.Context) error {
 	id := ctx.Param("id")
 	updatedCompany := new(models.Company)
-	
+
 	if err := ctx.Bind(updatedCompany); err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"message": "Invalid request payload",
 			"error":   err.Error(),
 		})
 	}
-	
+
 	// Validate required fields
 	if updatedCompany.Name == "" || updatedCompany.Email == "" {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"message": "Name and Email are required fields",
 		})
 	}
-	
+
 	// Update the company
 	err := c.service.Update(id, updatedCompany)
 	if err != nil {
@@ -106,14 +106,14 @@ func (c *CompanyController) UpdateCompany(ctx echo.Context) error {
 			"error":   err.Error(),
 		})
 	}
-	
+
 	return ctx.JSON(http.StatusOK, updatedCompany)
 }
 
 // DeleteCompany deletes a company
 func (c *CompanyController) DeleteCompany(ctx echo.Context) error {
 	id := ctx.Param("id")
-	
+
 	err := c.service.Delete(id)
 	if err != nil {
 		return ctx.JSON(http.StatusNotFound, map[string]string{
@@ -121,7 +121,7 @@ func (c *CompanyController) DeleteCompany(ctx echo.Context) error {
 			"error":   err.Error(),
 		})
 	}
-	
+
 	return ctx.JSON(http.StatusOK, map[string]string{
 		"message": fmt.Sprintf("Company with ID %s successfully deleted", id),
 	})
